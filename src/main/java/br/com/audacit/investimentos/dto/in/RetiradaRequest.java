@@ -1,4 +1,4 @@
-package br.com.audacit.investimentos.model;
+package br.com.audacit.investimentos.dto.in;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,22 +6,16 @@ import lombok.Data;
 
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class Investimento {
+public class RetiradaRequest {
 
     private UUID codigoInvestimento;
 
-    private BigDecimal valorInvestido;
-
-    private BigDecimal saldoTotal;
-
-    private BigDecimal saldoMensal;
-
-    private LocalDate mesMovimentacao;
+    @Positive
+    private BigDecimal valor;
 
 }
