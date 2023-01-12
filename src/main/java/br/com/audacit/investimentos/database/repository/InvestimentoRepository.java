@@ -1,6 +1,7 @@
 package br.com.audacit.investimentos.database.repository;
 
 import br.com.audacit.investimentos.database.entity.InvestimentoEntity;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,8 @@ import java.util.UUID;
 @Repository
 @RequiredArgsConstructor
 public class InvestimentoRepository {
+
+    private final DynamoDBMapper dynamoDBMapper;
 
     public UUID injetarDinheiro(InvestimentoEntity entity) {
         log.info("injetando_dinheiro");
