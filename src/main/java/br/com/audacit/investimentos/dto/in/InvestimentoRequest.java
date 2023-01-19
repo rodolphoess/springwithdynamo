@@ -6,13 +6,16 @@ import lombok.Data;
 
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 public class InvestimentoRequest {
 
+    private UUID codigoCliente;
+
     @Positive
-    private BigDecimal valorInvestido;
+    private BigDecimal valorMovimentado;
 
 }

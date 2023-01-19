@@ -13,9 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RetiradaRequest {
 
-    private UUID codigoInvestimento;
+    private UUID codigoCliente;
 
     @Positive
-    private BigDecimal valor;
+    private BigDecimal valorMovimentado;
 
 }
