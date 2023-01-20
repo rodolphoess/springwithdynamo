@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -13,14 +13,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Investimento {
 
-    private UUID codigoInvestimento;
+    private UUID codigoMovimentacao;
 
-    private BigDecimal valorInvestido;
+    private UUID codigoCliente;
 
-    private BigDecimal saldoTotal;
+    private String mesMovimentacao;
 
-    private BigDecimal saldoMensal;
+    private LocalDateTime dataHoraMovimentacao;
 
-    private LocalDate mesMovimentacao;
+    private BigDecimal valorMovimentado;
+
+    private BigDecimal saldoCliente;
 
 }

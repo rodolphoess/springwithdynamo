@@ -3,13 +3,16 @@ package br.com.audacit.investimentos.mapper;
 import br.com.audacit.investimentos.database.entity.InvestimentoEntity;
 import br.com.audacit.investimentos.dto.in.InvestimentoRequest;
 import br.com.audacit.investimentos.dto.in.RetiradaRequest;
+import br.com.audacit.investimentos.model.Investimento;
 import org.mapstruct.Mapper;
 
 @Mapper
 public interface InvestimentoMapper {
 
-    InvestimentoEntity investimentoRequestToEntity(InvestimentoRequest request);
+    Investimento investimentoRequestToDomain(InvestimentoRequest request);
 
-    InvestimentoEntity retiradaRequestToEntity(RetiradaRequest request);
+    Investimento retiradaRequestToDomain(RetiradaRequest request);
+
+    InvestimentoEntity domainToEntity(Investimento investimento);
 
 }

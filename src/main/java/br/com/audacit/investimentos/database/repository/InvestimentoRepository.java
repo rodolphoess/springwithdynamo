@@ -1,6 +1,8 @@
 package br.com.audacit.investimentos.database.repository;
 
-import br.com.audacit.investimentos.database.entity.InvestimentoEntity;
+import br.com.audacit.investimentos.mapper.InvestimentoMapper;
+import br.com.audacit.investimentos.mapper.MapperFactory;
+import br.com.audacit.investimentos.model.Investimento;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,15 +17,20 @@ import java.util.UUID;
 public class InvestimentoRepository {
 
     private final DynamoDBMapper dynamoDBMapper;
+    private final InvestimentoMapper mapper = MapperFactory.criaInstanciaMapper(InvestimentoMapper.class);
 
-    public UUID injetarDinheiro(InvestimentoEntity entity) {
+    public UUID injetarDinheiro(Investimento investimento) {
         log.info("injetando_dinheiro");
-        return UUID.randomUUID();
+        var entity = mapper.domainToEntity(investimento);
+        dynamoDBMapper.save(entity);
+        return entity.getCodigoCliente();
     }
 
-    public UUID retirarDinheiro(InvestimentoEntity entity) {
+    public UUID retirarDinheiro(Investimento investimento) {
         log.info("retirando_dinheiro");
-        return UUID.randomUUID();
+        var entity = mapper.domainToEntity(investimento);
+        dynamoDBMapper.save(entity);
+        return entity.getCodigoCliente();
     }
 
     public BigDecimal saldoMensal(String mesSaldo) {

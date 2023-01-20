@@ -18,17 +18,24 @@ import java.util.UUID;
 public class InvestimentoService {
 
     private final InvestimentoRepository repository;
-
     private final InvestimentoMapper mapper = MapperFactory.criaInstanciaMapper(InvestimentoMapper.class);
 
     public UUID injetarDinheiro(InvestimentoRequest investimento) {
         log.info("injetando_dinheiro");
-        return repository.injetarDinheiro(mapper.investimentoRequestToEntity(investimento));
+        //TODO: Considerar o valor movimentação positivo
+        //TODO: Somar o valor movimentação ao último saldo do cliente
+        //TODO: Gerar uma data e hora da movimentação
+        //TODO: Recuperar o mes da movimentação
+        return repository.injetarDinheiro(mapper.investimentoRequestToDomain(investimento));
     }
 
     public UUID retirarDinheiro(RetiradaRequest retirada) {
         log.info("retirando_dinheiro");
-        return repository.retirarDinheiro(mapper.retiradaRequestToEntity(retirada));
+        //TODO: Considerar o valor da movimentação negativo
+        //TODO: Subtrair o valor movimentação ao último saldo do cliente
+        //TODO: Gerar uma data e hora da movimentação
+        //TODO: Recuperar o mês da movimentação
+        return repository.retirarDinheiro(mapper.retiradaRequestToDomain(retirada));
     }
 
     public BigDecimal saldoMensal(String mesSaldo) {
