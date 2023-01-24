@@ -22,19 +22,19 @@ public class InvestimentoService {
 
     public UUID injetarDinheiro(InvestimentoRequest investimento) {
         log.info("injetando_dinheiro");
-        //TODO: Considerar o valor movimentação positivo
-        //TODO: Somar o valor movimentação ao último saldo do cliente
-        //TODO: Gerar uma data e hora da movimentação
-        //TODO: Recuperar o mes da movimentação
+        //TODO: Considerar o valor movimentação positivo - DONE em Investimento
+        //TODO: Somar o valor movimentação ao último saldo do cliente - Gerar um GET para recuperar esse dado
+        //TODO: Gerar uma data e hora da movimentação - DONE em Investimento
+        //TODO: Recuperar o mes da movimentação - DONE em Investimento
         return repository.injetarDinheiro(mapper.investimentoRequestToDomain(investimento));
     }
 
     public UUID retirarDinheiro(RetiradaRequest retirada) {
         log.info("retirando_dinheiro");
-        //TODO: Considerar o valor da movimentação negativo
-        //TODO: Subtrair o valor movimentação ao último saldo do cliente
-        //TODO: Gerar uma data e hora da movimentação
-        //TODO: Recuperar o mês da movimentação
+        //TODO: Considerar o valor da movimentação negativo - DONE em Investimento
+        //TODO: Subtrair o valor movimentação ao último saldo do cliente - Gerar um GET para recuperar esse dado
+        //TODO: Gerar uma data e hora da movimentação - DONE em Investimento
+        //TODO: Recuperar o mês da movimentação - DONE em Investimento
         return repository.retirarDinheiro(mapper.retiradaRequestToDomain(retirada));
     }
 
