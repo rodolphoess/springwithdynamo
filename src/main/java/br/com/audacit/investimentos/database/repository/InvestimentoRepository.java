@@ -20,26 +20,26 @@ public class InvestimentoRepository {
     private final InvestimentoMapper mapper = MapperFactory.criaInstanciaMapper(InvestimentoMapper.class);
 
     public UUID injetarDinheiro(Investimento investimento) {
-        log.info("injetando_dinheiro");
         var entity = mapper.domainToEntity(investimento);
         dynamoDBMapper.save(entity);
         return entity.getCodigoCliente();
     }
 
     public UUID retirarDinheiro(Investimento investimento) {
-        log.info("retirando_dinheiro");
         var entity = mapper.domainToEntity(investimento);
         dynamoDBMapper.save(entity);
         return entity.getCodigoCliente();
     }
 
     public BigDecimal saldoMensal(String mesSaldo) {
-        log.info("saldo_mensal");
         return BigDecimal.ONE;
     }
 
     public void cancelarInvestimento(UUID identificacaoMovimentacao) {
-        log.info("cancelando_investimento");
+    }
+
+    public BigDecimal buscaUltimoSaldo(UUID codigoCliente) {
+        return BigDecimal.ONE;
     }
 
 }

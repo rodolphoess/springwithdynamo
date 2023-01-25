@@ -47,4 +47,14 @@ public class Investimento {
         return this;
     }
 
+    public Investimento saldoClienteEnquantoCredito(BigDecimal ultimoSaldo, BigDecimal valorMovimentado) {
+        this.saldoCliente = ultimoSaldo.add(valorMovimentado);
+        return this;
+    }
+
+    public Investimento saldoClienteEnquantoDebito(BigDecimal ultimoSaldo, BigDecimal valorMovimentado) {
+        this.saldoCliente = ultimoSaldo.subtract(valorMovimentado);
+        return this;
+    }
+
 }
