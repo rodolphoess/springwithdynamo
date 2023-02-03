@@ -58,7 +58,7 @@ public class InvestimentoService {
     }
 
     public void cancelarInvestimento(UUID identificacaoMovimentacao) {
-        log.info("cancelando_investimento");
+        log.info("cancelando_investimento: {}", identificacaoMovimentacao);
         repository.cancelarInvestimento(identificacaoMovimentacao);
     }
 
