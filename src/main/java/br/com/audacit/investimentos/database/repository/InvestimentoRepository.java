@@ -12,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Repository
@@ -25,20 +22,30 @@ public class InvestimentoRepository {
     private final DynamoDBMapper dynamoDBMapper;
     private final InvestimentoMapper mapper = MapperFactory.criaInstanciaMapper(InvestimentoMapper.class);
 
-    public UUID injetarDinheiro(Investimento investimento) {
-        var entity = mapper.domainToEntity(investimento);
-        dynamoDBMapper.save(entity);
-        return entity.getCodigoCliente();
-    }
-
-    public UUID retirarDinheiro(Investimento investimento) {
+    public UUID realizarMovimentacao(Investimento investimento) {
         var entity = mapper.domainToEntity(investimento);
         dynamoDBMapper.save(entity);
         return entity.getCodigoCliente();
     }
 
     public BigDecimal saldoMensal(String mesSaldo) {
-        return BigDecimal.ONE;
+        Map<String, AttributeValue> parameters = new HashMap<>();
+        parameters.put(":mesMovimentacao", new AttributeValue().withS(mesSaldo));
+
+        DynamoDBQueryExpression<InvestimentoEntity> queryExpression = new DynamoDBQueryExpression<>();
+        queryExpression
+                .withIndexName("gsi_busca_cliente_por_mes")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("mes_movimentacao = :mesMovimentacao")
+                .withExpressionAttributeValues(parameters);
+
+        List<InvestimentoEntity> investimentosEntity = dynamoDBMapper.query(InvestimentoEntity.class, queryExpression);
+
+        List<BigDecimal> saldos = new ArrayList<>();
+        investimentosEntity.forEach(investimento -> saldos.add(investimento.getSaldoCliente()));
+        var saldoMensal = BigDecimal.ZERO;
+        saldos.forEach(saldoMensal::add);
+        return saldoMensal;
     }
 
     public void cancelarInvestimento(UUID identificacaoMovimentacao) {

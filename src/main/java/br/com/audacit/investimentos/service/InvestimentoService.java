@@ -33,7 +33,7 @@ public class InvestimentoService {
                 .saldoClienteEnquantoCredito(ultimoSaldo, investimentoRequest.getValorMovimentado())
                 .gerarDataHoraMovimentacao()
                 .mesMovimentacao();
-        return repository.injetarDinheiro(investimento);
+        return repository.realizarMovimentacao(investimento);
     }
 
     public UUID retirarDinheiro(RetiradaRequest retiradaRequest) {
@@ -49,7 +49,7 @@ public class InvestimentoService {
                 .saldoClienteEnquantoDebito(ultimoSaldo, retiradaRequest.getValorMovimentado())
                 .gerarDataHoraMovimentacao()
                 .mesMovimentacao();
-        return repository.retirarDinheiro(retirada);
+        return repository.realizarMovimentacao(retirada);
     }
 
     public BigDecimal saldoMensal(String mesSaldo) {
