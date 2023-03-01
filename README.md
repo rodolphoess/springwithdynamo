@@ -15,3 +15,25 @@ The following guides illustrate how to use some features concretely:
 * [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
 * [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
 
+### Criar tabela dynamo via AWS CLI
+
+- É necessário ter o Docker instalado e executando;
+- É necessário ter o Python instalado;
+- É necessário ter o Localstack instalado;
+
+```
+localstack start -d
+```
+```
+aws dynamodb create-table \
+--region=sa-east-1 \
+--endpoint-url http://localhost:4566 \
+--table-name investimento \
+--attribute-definitions \
+AttributeName=codigo_movimentacao,AttributeType=S \
+AttributeName=codigo_cliente,AttributeType=S \
+--key-schema \
+AttributeName=codigo_movimentacao,KeyType=HASH \
+AttributeName=codigo_cliente,KeyType=RANGE \
+--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+```
