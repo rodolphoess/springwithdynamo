@@ -44,7 +44,7 @@ public class InvestimentoController {
         return ResponseEntity.status(HttpStatus.OK).body(saldoMes);
     }
 
-    @DeleteMapping("/cancelar/movimentacao")
+    @DeleteMapping("/cancelar")
     public ResponseEntity<Object> cancelarMovimentacao(@RequestParam("movimentacao") UUID identificacaoMovimentacao) {
         log.info("solicitacao_cancelamento_movimentacao_recebida={}", identificacaoMovimentacao);
         investimentoService.cancelarInvestimento(identificacaoMovimentacao);
