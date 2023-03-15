@@ -1,15 +1,18 @@
 package br.com.audacit.investimentos.service;
 
+import br.com.audacit.investimentos.database.entity.InvestimentoEntity;
 import br.com.audacit.investimentos.database.repository.InvestimentoRepository;
 import br.com.audacit.investimentos.dto.in.InvestimentoRequest;
 import br.com.audacit.investimentos.dto.in.RetiradaRequest;
 import br.com.audacit.investimentos.mapper.InvestimentoMapper;
 import br.com.audacit.investimentos.mapper.MapperFactory;
+import br.com.audacit.investimentos.model.Investimento;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -21,13 +24,9 @@ public class InvestimentoService {
     private final InvestimentoMapper mapper = MapperFactory.criaInstanciaMapper(InvestimentoMapper.class);
 
     public UUID injetarDinheiro(InvestimentoRequest investimentoRequest) {
-        //TODO: Considerar o valor movimentação positivo - DONE em Investimento
-        //TODO: Somar o valor movimentação ao último saldo do cliente - Gerar um GET para recuperar esse dado
-        //TODO: Gerar uma data e hora da movimentação - DONE em Investimento
-        //TODO: Recuperar o mes da movimentação - DONE em Investimento
-
         log.info("injetando_dinheiro");
-        var ultimoSaldo = repository.buscaUltimoSaldo(investimentoRequest.getCodigoCliente());
+        var saldosCliente = repository.buscaSaldosCliente(investimentoRequest.getCodigoCliente());
+        var ultimoSaldo = filtraUltimoSaldoCliente(saldosCliente);
         var investimento = mapper.investimentoRequestToDomain(investimentoRequest)
                 .valorMovimentadoEnquantoCredito(investimentoRequest.getValorMovimentado())
                 .saldoClienteEnquantoCredito(ultimoSaldo, investimentoRequest.getValorMovimentado())
@@ -36,14 +35,15 @@ public class InvestimentoService {
         return repository.realizarMovimentacao(investimento);
     }
 
-    public UUID retirarDinheiro(RetiradaRequest retiradaRequest) {
-        //TODO: Considerar o valor da movimentação negativo - DONE em Investimento
-        //TODO: Subtrair o valor movimentação ao último saldo do cliente - Gerar um GET para recuperar esse dado
-        //TODO: Gerar uma data e hora da movimentação - DONE em Investimento
-        //TODO: Recuperar o mês da movimentação - DONE em Investimento
+    private BigDecimal filtraUltimoSaldoCliente(List<Investimento> saldosCliente) {
+        //TODO: Ver como percorrer toda a lista e achar a última entrada baseada na dataHoraMovimentacao
+        return BigDecimal.ZERO;
+    }
 
+    public UUID retirarDinheiro(RetiradaRequest retiradaRequest) {
         log.info("retirando_dinheiro");
-        var ultimoSaldo = repository.buscaUltimoSaldo(retiradaRequest.getCodigoCliente());
+        var saldosCliente = repository.buscaSaldosCliente(retiradaRequest.getCodigoCliente());
+        var ultimoSaldo = filtraUltimoSaldoCliente(saldosCliente);
         var retirada = mapper.retiradaRequestToDomain(retiradaRequest)
                 .valorMovimentadoEnquantoDebito(retiradaRequest.getValorMovimentado())
                 .saldoClienteEnquantoDebito(ultimoSaldo, retiradaRequest.getValorMovimentado())

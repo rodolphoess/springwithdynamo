@@ -53,21 +53,22 @@ public class InvestimentoRepository {
         dynamoDBMapper.delete(dynamoDBMapper.load(InvestimentoEntity.class, identificacaoMovimentacao));
     }
 
-    public BigDecimal buscaUltimoSaldo(UUID codigoCliente) {
+    public List<Investimento> buscaSaldosCliente(UUID codigoCliente) {
         Map<String, AttributeValue> parameters = new HashMap<>();
         parameters.put(":codigoCliente", new AttributeValue().withS(codigoCliente.toString()));
 
         DynamoDBQueryExpression<InvestimentoEntity> queryExpression = new DynamoDBQueryExpression<>();
         queryExpression
-                .withIndexName("")
                 .withConsistentRead(false)
-                .withKeyConditionExpression("")
-                .withFilterExpression("")
+                .withKeyConditionExpression("codigo_cliente = :codigoCliente")
                 .withExpressionAttributeValues(parameters);
 
-        InvestimentoEntity investimentoEntity = dynamoDBMapper.query(InvestimentoEntity.class, queryExpression).get(0);
+        List<InvestimentoEntity> investimentosEntity = dynamoDBMapper.query(InvestimentoEntity.class, queryExpression);
 
-        return investimentoEntity.getSaldoCliente();
+        List<Investimento> investimentos = new ArrayList<>();
+        investimentosEntity.forEach(entity -> investimentos.add(mapper.entityToDomain(entity)));
+
+        return investimentos;
     }
 
 }

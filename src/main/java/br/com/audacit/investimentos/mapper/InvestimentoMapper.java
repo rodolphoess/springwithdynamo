@@ -15,4 +15,5 @@ public interface InvestimentoMapper {
 
     InvestimentoEntity domainToEntity(Investimento investimento);
 
+    Investimento entityToDomain(InvestimentoEntity entity);
 }
