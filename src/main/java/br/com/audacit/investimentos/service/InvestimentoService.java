@@ -1,6 +1,5 @@
 package br.com.audacit.investimentos.service;
 
-import br.com.audacit.investimentos.database.entity.InvestimentoEntity;
 import br.com.audacit.investimentos.database.repository.InvestimentoRepository;
 import br.com.audacit.investimentos.dto.in.InvestimentoRequest;
 import br.com.audacit.investimentos.dto.in.RetiradaRequest;
@@ -36,8 +35,15 @@ public class InvestimentoService {
     }
 
     private BigDecimal filtraUltimoSaldoCliente(List<Investimento> saldosCliente) {
-        //TODO: Ver como percorrer toda a lista e achar a última entrada baseada na dataHoraMovimentacao
-        return BigDecimal.ZERO;
+        var ultimoSaldo = saldosCliente.get(0).getSaldoCliente();
+        var ultimaData = saldosCliente.get(0).getDataHoraMovimentacao();
+        for (Investimento investimento : saldosCliente) {
+            if (investimento.getDataHoraMovimentacao().isAfter(ultimaData)) {
+                ultimaData = investimento.getDataHoraMovimentacao();
+                ultimoSaldo = investimento.getSaldoCliente();
+            }
+        }
+        return ultimoSaldo;
     }
 
     public UUID retirarDinheiro(RetiradaRequest retiradaRequest) {
