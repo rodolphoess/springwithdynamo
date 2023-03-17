@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -47,14 +48,24 @@ public class Investimento {
         return this;
     }
 
-    public Investimento saldoClienteEnquantoCredito(BigDecimal ultimoSaldo, BigDecimal valorMovimentado) {
+    public Investimento adicionaCreditoSaldoCliente(BigDecimal ultimoSaldo, BigDecimal valorMovimentado) {
         this.saldoCliente = ultimoSaldo.add(valorMovimentado);
         return this;
     }
 
-    public Investimento saldoClienteEnquantoDebito(BigDecimal ultimoSaldo, BigDecimal valorMovimentado) {
+    public Investimento debitaSaldoCliente(BigDecimal ultimoSaldo, BigDecimal valorMovimentado) {
         this.saldoCliente = ultimoSaldo.subtract(valorMovimentado);
         return this;
+    }
+
+    public BigDecimal filtraUltimoSaldo(List<Investimento> investimentos) {
+        for (Investimento investimento : investimentos) {
+            if (investimento.getDataHoraMovimentacao().isAfter(this.dataHoraMovimentacao)) {
+                this.dataHoraMovimentacao = investimento.getDataHoraMovimentacao();
+                this.saldoCliente = investimento.getSaldoCliente();
+            }
+        }
+        return this.saldoCliente;
     }
 
 }

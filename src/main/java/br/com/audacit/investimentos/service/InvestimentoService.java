@@ -25,36 +25,24 @@ public class InvestimentoService {
     public UUID injetarDinheiro(InvestimentoRequest investimentoRequest) {
         log.info("injetando_dinheiro");
         var saldosCliente = repository.buscaSaldosCliente(investimentoRequest.getCodigoCliente());
-        var ultimoSaldo = filtraUltimoSaldoCliente(saldosCliente);
         var investimento = mapper.investimentoRequestToDomain(investimentoRequest)
                 .valorMovimentadoEnquantoCredito(investimentoRequest.getValorMovimentado())
-                .saldoClienteEnquantoCredito(ultimoSaldo, investimentoRequest.getValorMovimentado())
                 .gerarDataHoraMovimentacao()
                 .mesMovimentacao();
+        var ultimoSaldo = investimento.filtraUltimoSaldo(saldosCliente);
+        investimento = investimento.adicionaCreditoSaldoCliente(ultimoSaldo, investimentoRequest.getValorMovimentado());
         return repository.realizarMovimentacao(investimento);
-    }
-
-    private BigDecimal filtraUltimoSaldoCliente(List<Investimento> saldosCliente) {
-        var ultimoSaldo = saldosCliente.get(0).getSaldoCliente();
-        var ultimaData = saldosCliente.get(0).getDataHoraMovimentacao();
-        for (Investimento investimento : saldosCliente) {
-            if (investimento.getDataHoraMovimentacao().isAfter(ultimaData)) {
-                ultimaData = investimento.getDataHoraMovimentacao();
-                ultimoSaldo = investimento.getSaldoCliente();
-            }
-        }
-        return ultimoSaldo;
     }
 
     public UUID retirarDinheiro(RetiradaRequest retiradaRequest) {
         log.info("retirando_dinheiro");
         var saldosCliente = repository.buscaSaldosCliente(retiradaRequest.getCodigoCliente());
-        var ultimoSaldo = filtraUltimoSaldoCliente(saldosCliente);
         var retirada = mapper.retiradaRequestToDomain(retiradaRequest)
                 .valorMovimentadoEnquantoDebito(retiradaRequest.getValorMovimentado())
-                .saldoClienteEnquantoDebito(ultimoSaldo, retiradaRequest.getValorMovimentado())
                 .gerarDataHoraMovimentacao()
                 .mesMovimentacao();
+        var ultimoSaldo = retirada.filtraUltimoSaldo(saldosCliente);
+        retirada = retirada.debitaSaldoCliente(ultimoSaldo, retiradaRequest.getValorMovimentado());
         return repository.realizarMovimentacao(retirada);
     }
 
