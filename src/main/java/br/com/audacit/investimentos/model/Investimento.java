@@ -59,12 +59,12 @@ public class Investimento {
     }
 
     public BigDecimal filtraUltimoSaldo(List<Investimento> investimentos) {
-        for (Investimento investimento : investimentos) {
+        investimentos.forEach(investimento -> {
             if (investimento.getDataHoraMovimentacao().isAfter(this.dataHoraMovimentacao)) {
                 this.dataHoraMovimentacao = investimento.getDataHoraMovimentacao();
                 this.saldoCliente = investimento.getSaldoCliente();
             }
-        }
+        });
         return this.saldoCliente;
     }
 
