@@ -16,13 +16,13 @@ public class InvestimentoEntity {
     private UUID codigoMovimentacao;
 
     @DynamoDBRangeKey(attributeName = "codigo_cliente")
-    @DynamoDBIndexHashKey(attributeName = "codigo_cliente", globalSecondaryIndexNames = {"gsi_busca_cliente_por_mes", "gsi_busca_cliente_por_data"})
+    @DynamoDBIndexHashKey(attributeName = "codigo_cliente", globalSecondaryIndexNames = {"gsi_busca_cliente_por_mes"})
     private UUID codigoCliente;
 
     @DynamoDBIndexRangeKey(attributeName = "mes_movimentacao", globalSecondaryIndexName = "gsi_busca_cliente_por_mes")
     private String mesMovimentacao;
 
-    @DynamoDBIndexRangeKey(attributeName = "data_hora_movimentacao", globalSecondaryIndexName = "gsi_busca_cliente_por_data")
+    @DynamoDBAttribute(attributeName = "data_hora_movimentacao")
     @DynamoDBTypeConvertedTimestamp(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timeZone = "GMT-3")
     private LocalDateTime dataHoraMovimentacao;
 
