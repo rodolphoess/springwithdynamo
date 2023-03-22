@@ -1,0 +1,80 @@
+{
+  "ModelName": "Investimento",
+  "ModelMetadata": {
+    "Author": "",
+    "DateCreated": "Mar 01, 2023, 02:54 PM",
+    "DateLastModified": "Mar 22, 2023, 01:15 PM",
+    "Description": "",
+    "AWSService": "Amazon DynamoDB",
+    "Version": "3.0"
+  },
+  "DataModel": [
+    {
+      "TableName": "investimento",
+      "KeyAttributes": {
+        "PartitionKey": {
+          "AttributeName": "codigo_movimentacao",
+          "AttributeType": "S"
+        },
+        "SortKey": {
+          "AttributeName": "codigo_cliente",
+          "AttributeType": "S"
+        }
+      },
+      "NonKeyAttributes": [
+        {
+          "AttributeName": "mes_movimentacao",
+          "AttributeType": "S"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "gsi_busca_cliente_por_mes",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "codigo_cliente",
+              "AttributeType": "S"
+            },
+            "SortKey": {
+              "AttributeName": "mes_movimentacao",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "DataAccess": {
+        "MySql": {}
+      },
+      "BillingMode": "PROVISIONED",
+      "ProvisionedCapacitySettings": {
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        },
+        "AutoScalingRead": {
+          "ScalableTargetRequest": {
+            "MinCapacity": 1,
+            "MaxCapacity": 10,
+            "ServiceRole": "AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+          },
+          "ScalingPolicyConfiguration": {
+            "TargetValue": 70
+          }
+        },
+        "AutoScalingWrite": {
+          "ScalableTargetRequest": {
+            "MinCapacity": 1,
+            "MaxCapacity": 10,
+            "ServiceRole": "AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+          },
+          "ScalingPolicyConfiguration": {
+            "TargetValue": 70
+          }
+        }
+      }
+    }
+  ]
+}
